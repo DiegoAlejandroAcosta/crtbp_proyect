@@ -1,0 +1,465 @@
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+FloatLayout:
+    MDBottomNavigation:
+        MDBottomNavigationItem:
+            name: "screen1"
+            text: "Filter"
+            icon: "filter-variant"
+            FloatLayout:
+                MDCard:
+                    pos_hint: {'x': 0,'y':0.75}
+                    size_hint: (1,0.25)
+                    padding: 10
+                    spacing: 10
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 0.1,1
+                        pos_hint: {'x':0,'y':0}
+                        spacing: 10
+                        padding: 5
+                        MDLabel:
+                            text: 'Three Body Periodic Orbit'
+                            halign: 'center'
+                            font_size: 32
+                            size_hint: (1,0.5)
+                            color: 167/255, 103/255 , 0, 1
+                        MDLabel:
+                            text: 'The JPL Three-Body Periodic Orbit Catalog contains precomputed periodic orbits from selected families in multiple three-body systems. Orbits are computed in the framework of the circular restricted three-body problem (CR3BP).  Users can retrieve the initial conditions and other required parameters to propagate the orbits independently. The physical properties of each three-body system, including the coordinates of the libration points, are also available.'
+                            size_hint: (1,0.5)
+                MDCard:
+                    pos_hint: {'x':0.02,'y':0.65}
+                    size_hint_x:0.6
+                    size_hint_y:0.05
+                    md_bg_color: 55/100,55/100,1,1
+                    padding: 0
+                    spacing: 0
+                    BoxLayout:
+                        canvas.before:
+                            Color:
+                                rgba: (100/255,45/355,15/255,1)
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        orientation: 'horizontal'
+                        size_hint: 1,1
+                        pos_hint: {'x':0,'y':0}
+                        MDLabel:
+                            text: 'Orbit Filter'
+                            halign: 'center'
+                            md_bg_color: 55/255,100/255,1,1
+                MDCard:
+                    pos_hint: {'x':0.65,'y':0.65}
+                    size_hint_x:0.3
+                    size_hint_y:0.05
+                    padding: 0
+                    spacing: 0
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1,1
+                        pos_hint: {'x':0,'y':0}
+                        MDLabel:
+                            text: 'Constants'
+                            halign: 'center'
+                            md_bg_color: 55/255,100/255,1,1
+                MDCard:
+                    pos_hint: {'x':0.02,'y':0.05}
+                    size_hint_x:0.6
+                    size_hint_y:0.6
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 0.1,1
+                        pos_hint: {'x':0,'y':0}
+                        spacing: 10
+                        padding: 20
+                        MDLabel:
+                            md_bg_color:238/255,238/255,238/255,1
+                            pos_hint: {'x': 0,'y':0.9}
+                            text : 'Principal body'
+                            halign: 'center'
+                            size_hint: (1,0.1)
+                        MDLabel:
+                            md_bg_color: 238/255,238/255,238/255,1
+                            text : 'secondary body'
+                            pos_hint: {'x': 0,'y':0.8}
+                            halign: 'center'
+                            size_hint: (1,0.1)
+                        MDLabel:
+                            md_bg_color: 238/255,238/255,238/255,1
+                            text : 'family'
+                            halign: 'center'
+                            pos_hint: {'x': 0,'y':0.7}
+                            size_hint: (1,0.1)
+                        MDLabel:
+                            md_bg_color: 238/255,238/255,238/255,1
+                            text : 'period'
+                            halign: 'center'
+                            size_hint: (1,0.1)
+                            pos_hint: {'x':0,'y':0.6}
+                        MDLabel:
+                            md_bg_color: 238/255,238/255,238/255,1
+                            text: 'jacobi constant'
+                            halign: 'center'
+                            size_hint: (1,0.1)
+                            pos_hint: {'x':0,'y':0.5}
+                        MDLabel:
+                            md_bg_color: 238/255,238/255,238/255,1
+                            text: 'stability index'
+                            halign: 'center'
+                            size_hint: (1,0.1)
+                            pos_hint: {'x':0,'y':0.4}
+                        Button:
+                            text: 'Load Orbits'
+                            size_hint: (1,0.1)
+                            background_color: 92/255,184/255, 92/255
+                            pos_hint: {'x':0,'y':0.5}
+                            on_press:
+                                loading.active = True
+                                app.thread_function()
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 0.3,1
+                        pos_hint: {'x':0.3,'y':0}
+                        spacing: 10
+                        padding: 20
+                        Spinner:
+                            id: Principal
+                            size_hint: (1,0.1)
+                            pos_hint: {'x': 0, 'y': .9}
+                            text: 'Select Option'
+                            on_release: app.principal_bodies()
+                            on_text: syscons.text = ''
+                        Spinner:
+                            id:Secondary
+                            size_hint: (1,0.1)
+                            pos_hint: {'x': 0, 'y': .8}
+                            text: 'Select Option'
+                            on_release: app.second_bodies()
+                            on_text: app.setsystem(Secondary.text)
+                            disabled: True
+                            sync_height: False
+                        Spinner:
+                            id:family
+                            size_hint: (1,0.1)
+                            pos_hint: {'x': 0.5, 'y': .7}
+                            text: 'Select Option'
+                            on_release: app.family()
+                            pos_hint: {'x':0,'y':0.6}
+                            on_text: app.setfamily(family.text)
+                        BoxLayout:
+                            size_hint: 1,0.1
+                            pos_hint: {'x':0,'y':0}
+                            spacing: 10
+                            padding: 2
+                            orientation: 'horizontal'
+                            MDLabel:
+                                pos_hint: {'x': 0,'y':0}
+                                text : 'All'
+                                halign: 'center'
+                                size_hint_x: 0.1
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: allperiod
+                                active: True
+                                group: 'group1'
+                                pos_hint: {'x': 0.38,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('allperiod')
+                                on_release: app.disablerange('allperiod')
+                            MDLabel:
+                                pos_hint: {'x': 0.38,'y':0}
+                                text : 'Range'
+                                halign: 'center'
+                                size_hint_x: 0.15
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: rangeperiod
+                                group: 'group1'
+                                pos_hint: {'x': 0.50,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('rangeperiod')
+                                on_release: app.disablerange('rangeperiod')
+                            TextInput:
+                                id: minperiod
+                                hint_text: 'min'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+                            TextInput:
+                                id: maxperiod
+                                hint_text: 'max'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+
+                        BoxLayout:
+                            size_hint: 1,0.1
+                            pos_hint: {'x':0,'y':0.1}
+                            spacing: 10
+                            padding: 2
+                            orientation: 'horizontal'
+                            canvas.before:
+                            MDLabel:
+                                pos_hint: {'x': 0,'y':0}
+                                text : 'All'
+                                halign: 'center'
+                                size_hint_x: 0.1
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: alljac
+                                active: True
+                                group: 'group2'
+                                pos_hint: {'x': 0.38,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('alljac')
+                                on_release: app.disablerange('alljac')
+                            MDLabel:
+                                pos_hint: {'x': 0.38,'y':0}
+                                text : 'Range'
+                                halign: 'center'
+                                size_hint_x: 0.15
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: rangejac
+                                group: 'group2'
+                                pos_hint: {'x': 0.50,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('rangejac')
+                                on_release: app.disablerange('rangejac')
+                            TextInput:
+                                id: minjac
+                                hint_text: 'min'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+                            TextInput:
+                                id: maxjac
+                                hint_text: 'max'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+                        BoxLayout:
+                            size_hint: 1,0.1
+                            pos_hint: {'x':0,'y':0.1}
+                            spacing: 10
+                            padding: 2
+                            orientation: 'horizontal'
+                            MDLabel:
+                                pos_hint: {'x': 0,'y':0}
+                                text : 'All'
+                                halign: 'center'
+                                size_hint_x: 0.1
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: allstb
+                                active: True
+                                group: 'group3'
+                                pos_hint: {'x': 0.38,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('allstb')
+                                on_release: app.disablerange('allstb')
+                            MDLabel:
+                                pos_hint: {'x': 0.38,'y':0}
+                                text : 'Range'
+                                halign: 'center'
+                                size_hint_x: 0.15
+                                size_hint_y: 1
+                            MDCheckbox:
+                                id: rangestb
+                                group: 'group3'
+                                pos_hint: {'x': 0.50,'y':0}
+                                size_hint: .05,1.2
+                                on_press: app.checkboxs('rangestb')
+                                on_release: app.disablerange('rangestb')
+                            TextInput:
+                                id: minstb
+                                hint_text: 'min'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+                            TextInput:
+                                id: maxstb
+                                hint_text: 'max'
+                                pos_hint: {'x': 0.6,'y':0}
+                                size_hint_x: 0.2
+                                size_hint_y: 1
+                                multiline: False
+                                input_filter: 'float'
+                                disabled: True
+                        BoxLayout:
+                            size_hint: 1,0.1
+                            pos_hint: {'x':0,'y':0.0}
+                            spacing: 10
+                            padding: 2
+                            orientation: 'horizontal'
+                            MDLabel:
+                                id: errorlabel
+                                text: ''
+                                size_hint: (0.3,0.1)
+                                pos_hint: {'x': 0, 'y': 0.5}
+                                halign: 'center'
+                            MDSpinner:
+                                id: loading
+                                size_hint: (0.03,0.03)
+                                pos_hint: {'x':0,'y':0.5}
+                                active: False
+                MDCard:
+                    pos_hint: {'x':0.65,'y':0.25}
+                    size_hint_x:0.3
+                    size_hint_y:0.4
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: 10
+                        padding: 10
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            pos_hint: {'x':0,'y':0.8}
+                            size_hint: (1,0.1)
+                            padding: 10
+                            spacing:10
+                            canvas.before:
+                                Color:
+                                    rgba: (238/255,238/255,238/255,1)
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            MDLabel:
+                                text: 'system'
+                                pos_hint: {'x':0,'y':0.5}
+                                size_hint: (0.5,0.5)
+                            MDLabel:
+                                id: syscons
+                                text: ''
+                                pos_hint: {'x':0.5,'y':0.5}
+                                size_hint: (0.5,0.5)
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            pos_hint: {'x':0,'y':0.6}
+                            size_hint: (1,0.1)
+                            padding: 10
+                            spacing:10
+                            MDLabel:
+                                text: 'family'
+                                pos_hint: {'x':0,'y':0.5}
+                                size_hint: (0.5,0.5)
+                            MDLabel:
+                                text: ''
+                                id: familycons
+                                pos_hint: {'x':0.5,'y':0.5}
+                                size_hint: (0.5,0.5)
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            pos_hint: {'x':0,'y':0.4}
+                            size_hint: (1,0.1)
+                            padding: 10
+                            spacing:10
+                            canvas.before:
+                                Color:
+                                    rgba: (238/255,238/255,238/255,1)
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            MDLabel:
+                                text: 'jacobi constant'
+                                pos_hint: {'x':0,'y':0.5}
+                                size_hint: (0.5,0.5)
+                            MDLabel:
+                                id: jaccons
+                                text: ''
+                                pos_hint: {'x':0.5,'y':0.5}
+                                size_hint: (0.5,0.5)
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            pos_hint: {'x':0,'y':0.6}
+                            size_hint: (1,0.1)
+                            padding: 10
+                            spacing:10
+                            MDLabel:
+                                text: 'period'
+                                pos_hint: {'x':0,'y':0.5}
+                                size_hint: (0.5,0.5)
+                            MDLabel:
+                                id: periodcons
+                                text: ''
+                                pos_hint: {'x':0.5,'y':0.5}
+                                size_hint: (0.5,0.5)
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            pos_hint: {'x':0,'y':0.4}
+                            size_hint: (1,0.1)
+                            padding: 10
+                            spacing:10
+                            canvas.before:
+                                Color:
+                                    rgba: (238/255,238/255,238/255,1)
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            MDLabel:
+                                text: 'stability index'
+                                pos_hint: {'x':0,'y':0.5}
+                                size_hint: (0.5,0.5)
+                            MDLabel:
+                                id: stbcons
+                                text: ''
+                                pos_hint: {'x':0.5,'y':0.5}
+                                size_hint: (0.5,0.5)
+
+        MDBottomNavigationItem:
+            id: orbits_screen
+            name: 'screen2'
+            text: 'Orbit'
+            icon: "orbit"
+            disabled: True
+            FloatLayout:
+                id: layout_orbit
+                MDCard:
+                    size_hint: (1,0.2)
+                    pos_hint: {'x': 0,'y':0.8}
+                    FloatLayout:
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,45/355,15/255,1)
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        spacing: 10
+                        padding: 20
+                        Button:
+                            md_bg_color: 45/255, 46/255, 95/255,1
+                            text: 'Download i.c.s'
+                            size_hint: (0.2,0.8)
+                            pos_hint: {'x':0.02,'y':0.1}
+                            on_release: app.download()
+                        Button:
+                            md_bg_color: 45/255, 46/255, 95/255,1
+                            text: 'Plot Orbits'
+                            size_hint: (0.2,0.8)
+                            pos_hint: {'x':0.24,'y':0.1}
+                            on_release: app.plotting()
+                        Button:
+                            md_bg_color: 45/255, 46/255, 95/255,1
+                            text: 'Preview Family'
+                            size_hint: (0.2,0.8)
+                            pos_hint: {'x':0.46,'y':0.1}
+
+                            on_release: app.preview_family()
+                MDCard:
+                    id: table_pos
+                    size_hint: (1,0.8)
+                    pos_hint: {'x': 0,'y':0}
+
